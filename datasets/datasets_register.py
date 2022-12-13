@@ -13,11 +13,18 @@ from aprec.datasets.yelp import get_yelp_dataset
 from aprec.datasets.mts_kion import get_mts_kion_dataset
 from aprec.datasets.dataset_utils import filter_cold_users
 from aprec.utils.os_utils import mkdir_p_local
+from aprec.datasets.mooc import get_mooc_cube_x_dataset
+from aprec.datasets.ednet import get_ednet_dataset
+
 
 class DatasetsRegister(object):
     DATA_DIR = "data/cache"
 
     _all_datasets =  {
+        # Adding MoocCubeX dataset
+        "mooc-cube-x": get_mooc_cube_x_dataset,
+        "ednet": get_ednet_dataset,
+        # Existing dataset configs
         "BERT4rec.ml-1m": lambda: get_bert4rec_dataset("ml-1m"),
         "BERT4rec.steam": lambda: get_bert4rec_dataset("steam"),
         "BERT4rec.beauty": lambda: get_bert4rec_dataset("beauty"),
@@ -29,13 +36,19 @@ class DatasetsRegister(object):
         "mts_kion": lambda: get_mts_kion_dataset(),
         "yelp": get_yelp_dataset,
         "netflix": get_netflix_dataset,
-
+        
+        "mooc-cube-x_warm5": lambda: filter_cold_users(get_mooc_cube_x_dataset(), 5),
+        "ednet_warm5": lambda: filter_cold_users(get_ednet_dataset(), 5),
+        
         "ml-20m_warm5": lambda: filter_cold_users(get_movielens20m_actions(min_rating=0.0), 5), 
         "booking_warm5": lambda: filter_cold_users(get_booking_dataset(unix_timestamps=True, mark_control=False)[0], 5), 
         "gowalla_warm5": lambda: filter_cold_users(get_gowalla_dataset(), 5), 
         "yelp_warm5": lambda: filter_cold_users(get_yelp_dataset(), 5),
         "netflix_warm5": lambda: filter_cold_users(DatasetsRegister.read_from_cache("netflix"), 5), 
 
+        "mooc-cube-x_warm10": lambda: filter_cold_users(get_mooc_cube_x_dataset(), 10),
+        "ednet_warm10": lambda: filter_cold_users(get_ednet_dataset(), 10),
+        
         "ml-20m_warm10": lambda: filter_cold_users(get_movielens20m_actions(min_rating=0.0), 10), 
         "booking_warm10": lambda: filter_cold_users(get_booking_dataset(unix_timestamps=True, mark_control=False)[0], 10), 
         "gowalla_warm10": lambda: filter_cold_users(get_gowalla_dataset(), 10), 

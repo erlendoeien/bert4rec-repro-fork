@@ -39,5 +39,5 @@ do
     echo "experiment_result: ${experiment_result}"
     echo "experiment_commit: ${experiment_commit}"
     git log -1 > $experiment_commit
-	unbuffer python3 run_experiment.py $config $experiment_result > $experiment_stdout 2> $experiment_stderr;
+	expect `which unbuffer` python3 run_experiment.py $config $experiment_result > $experiment_stdout 2> $experiment_stderr;
 done;

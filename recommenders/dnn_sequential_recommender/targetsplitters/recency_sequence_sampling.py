@@ -8,6 +8,16 @@ def exponential_importance(p):
 def linear_importance(a=1, b=1):
     return lambda n, k: a*k+b
 
+def log_importance(a=1, b=1):
+    # Independent of alpha
+    return lambda n, k: a*np.log(k+b)+b
+
+def inv_exponential_importance(a=1):
+    # Not defined for a=0
+    return lambda n, k: a**k
+
+
+
 class RecencySequenceSampling(TargetSplitter):
     #recency importance is a function that defines the chances of k-th element 
     #to be sampled as a positive in the sequence of the length n

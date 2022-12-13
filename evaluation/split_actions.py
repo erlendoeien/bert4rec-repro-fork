@@ -77,7 +77,8 @@ class LeaveOneOut(ActionsSplitter):
             valid_user_selection = list(eligible_users - control_users)
         valid_user_selection.sort()
         np.random.seed(self.random_seed)
-        test_user_ids = set(np.random.choice(valid_user_selection, self.max_test_users, replace=False))
+        # FIX SELF_MAX_USERS AFTER REMOVAL OF SINGLE ACTION USERS
+        test_user_ids = set(np.random.choice(valid_user_selection, min(len(valid_user_selection), self.max_test_users), replace=False))
         for user_id in users:
             if user_id in test_user_ids:
                 train += users[user_id][:-1]
